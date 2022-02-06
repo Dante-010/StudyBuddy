@@ -5,20 +5,27 @@ import static org.hamcrest.CoreMatchers.*;
 
 import android.content.Context;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.Observer;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.danteculaciati.studybuddy.Objectives.Objective;
 import com.danteculaciati.studybuddy.Objectives.ObjectiveDao;
+import com.danteculaciati.studybuddy.Objectives.ObjectiveDatabase;
 import com.danteculaciati.studybuddy.Objectives.ObjectiveType;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+
 
 class TestUtil {
     // Create a basic, trivial objective.
@@ -34,118 +41,105 @@ class TestUtil {
     }
 }
 
+@RunWith(AndroidJUnit4.class)
 public class ObjectivesInstrumentedTest {
+    @Rule
+    public InstantTaskExecutorRule rule = new InstantTaskExecutorRule();
+
+    private Observer<List<Objective>> listObserver;
+    private Observer<Objective> objectiveObserver;
+    private Objective objective;
     private ObjectiveDao objectiveDao;
-    private AppDatabase db;
+    private ObjectiveDatabase db;
 
     @Before
-    public void createDb() {
+    public void setup() {
+        objective = TestUtil.createObjective();
+        objective.setId(1); // id is set to 1 because 0 counts as a null value (to Room).
+
         Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
+        db = Room.inMemoryDatabaseBuilder(context, ObjectiveDatabase.class).allowMainThreadQueries().build();
         objectiveDao = db.getObjectiveDao();
     }
 
     @After
-    public void closeDb() throws IOException {
+    public void cleanup() {
         db.close();
+        listObserver = null;
+        objectiveObserver = null;
     }
-
-    // In many of these tests, id is set to 1 because, otherwise, Room automatically sets the ID to 1,
-    // and when the objects are compared they do not match (a value of 0 counts as null).
 
     @Test
     public void objectiveIsInsertedIntoDatabase() {
-        Objective objective = TestUtil.createObjective();
-        objective.setId(1);
         objectiveDao.insertAll(objective);
-        List<Objective> objectives = objectiveDao.getAll();
-
-        assertThat(objectives.get(0), equalTo(objective));
+        listObserver = objectives -> assertThat(objectives.get(0), equalTo(objective));
+        objectiveDao.getAll().observeForever(listObserver);
     }
 
     @Test
     public void objectiveIsActivated() {
-        Objective objective = TestUtil.createObjective();
-        objective.setId(1);
         objectiveDao.insertAll(objective);
-        List<Objective> objectives = objectiveDao.getActive();
-
-        assertThat(objectives.get(0), equalTo(objective));
+        listObserver = objectives -> assertThat(objectives.get(0), equalTo(objective));
+        objectiveDao.getActive().observeForever(listObserver);
     }
 
     @Test public void objectiveIsNotActivated() {
-        Objective objective = TestUtil.createObjective();
         objective.setEndDate(LocalDate.now().minusDays(1));
         objectiveDao.insertAll(objective);
-        List<Objective> objectives = objectiveDao.getActive();
 
-        assertTrue(objectives.isEmpty());
+        listObserver = objectives -> assertTrue(objectives.isEmpty());
+        objectiveDao.getActive().observeForever(listObserver);
     }
 
     @Test
     public void objectiveIsUpdated() {
-        Objective objective = TestUtil.createObjective();
-        objective.setId(1);
         objectiveDao.insertAll(objective);
-        List<Objective> objectives = objectiveDao.getAll();
-        assertEquals(objectives.get(0).getTitle(), objective.getTitle());
+        listObserver = objectives -> assertEquals(objectives.get(0).getTitle(), objective.getTitle());
+        objectiveDao.getAll().observeForever(listObserver);
 
         objective.setTitle("New Title");
+        listObserver = objectives -> assertEquals(objectives.get(0).getTitle(), objective.getTitle());
         objectiveDao.updateAll(objective);
-        objectives = objectiveDao.getAll();
-
-        assertEquals(objectives.get(0).getTitle(), objective.getTitle());
     }
 
     @Test
     public void objectiveIsDeleted() {
-        Objective objective = TestUtil.createObjective();
-        objective.setId(1);
         objectiveDao.insertAll(objective);
-        List<Objective> objectives = objectiveDao.getAll();
-        assertFalse(objectives.isEmpty());
-
         objectiveDao.deleteAll(objective);
-        objectives = objectiveDao.getAll();
-
-        assertTrue(objectives.isEmpty());
+        listObserver = objectives -> assertTrue(objectives.isEmpty());
+        objectiveDao.getAll().observeForever(listObserver);
     }
 
     @Test
     public void objectiveCanBeSearchedById() {
-        Objective objective = TestUtil.createObjective();
         objective.setId(10);
         objectiveDao.insertAll(objective);
-        Objective returned_objective = objectiveDao.findById(10);
 
-        assertThat(returned_objective, equalTo(objective));
+        objectiveObserver = returned_objective -> assertThat(returned_objective, equalTo(objective));
+        objectiveDao.findById(10).observeForever(objectiveObserver);
     }
 
     @Test
     public void objectiveCanBeSearchedByType() {
-        Objective objective = TestUtil.createObjective();
-        for (int i = 0; i < 3; i++) {
-            objective.setType(ObjectiveType.OBJECTIVE_DO);
-            objectiveDao.insertAll(objective);
-        }
         objective.setType(ObjectiveType.OBJECTIVE_READ);
         objectiveDao.insertAll(objective);
-        List<Objective> objectives = objectiveDao.findByType(ObjectiveType.OBJECTIVE_DO);
 
-        assertEquals(objectives.size(), 3);
+        objective.setType(ObjectiveType.OBJECTIVE_LISTEN);
+        objectiveDao.insertAll(objective);
+
+        listObserver = objectives -> assertThat(objectives.get(0), equalTo(objective));
+        objectiveDao.findByType(ObjectiveType.OBJECTIVE_LISTEN).observeForever(listObserver);
     }
 
     @Test
-    public void objectiveIsReplacedWhenInsertedWithSameId() {
-        Objective objective = TestUtil.createObjective();
+    public void objectiveIsReplaced() {
         objective.setId(10);
         objectiveDao.insertAll(objective);
 
         objective.setTitle("New Title");
         objectiveDao.insertAll(objective);
 
-        objective = objectiveDao.findById(10);
-
-        assertEquals(objective.getTitle(), "New Title");
+        objectiveObserver = objective -> assertEquals(objective.getTitle(), "New Title");
+        objectiveDao.findById(10).observeForever(objectiveObserver);
     }
 }
