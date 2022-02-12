@@ -13,11 +13,13 @@ public abstract class ObjectiveDatabase extends RoomDatabase {
     public abstract ObjectiveDao getObjectiveDao();
     private static ObjectiveDatabase INSTANCE;
 
+    // This method makes sure that only one instance of the database
+    // is being worked with at all times.
     static ObjectiveDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (ObjectiveDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                    INSTANCE = Room.databaseBuilder(context,
                             ObjectiveDatabase.class, "objective_database")
                             .build();
                 }

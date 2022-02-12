@@ -22,7 +22,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -42,7 +41,7 @@ class TestUtil {
 }
 
 @RunWith(AndroidJUnit4.class)
-public class ObjectivesInstrumentedTest {
+public class ObjectiveDaoInstrumentedTest {
     @Rule
     public InstantTaskExecutorRule rule = new InstantTaskExecutorRule();
 
