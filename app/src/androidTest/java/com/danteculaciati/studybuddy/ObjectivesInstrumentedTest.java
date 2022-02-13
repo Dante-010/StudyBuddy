@@ -3,18 +3,16 @@ package com.danteculaciati.studybuddy;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import android.content.Context;
+import android.app.Application;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
-import androidx.room.Room;
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.danteculaciati.studybuddy.Objectives.Objective;
-import com.danteculaciati.studybuddy.Objectives.ObjectiveDao;
-import com.danteculaciati.studybuddy.Objectives.ObjectiveDatabase;
 import com.danteculaciati.studybuddy.Objectives.ObjectiveType;
+import com.danteculaciati.studybuddy.Objectives.ObjectiveViewModel;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,104 +39,102 @@ class TestUtil {
 }
 
 @RunWith(AndroidJUnit4.class)
-public class ObjectiveDaoInstrumentedTest {
+public class ObjectivesInstrumentedTest {
     @Rule
     public InstantTaskExecutorRule rule = new InstantTaskExecutorRule();
 
     private Observer<List<Objective>> listObserver;
     private Observer<Objective> objectiveObserver;
+    
+    private ObjectiveViewModel viewModel;
     private Objective objective;
-    private ObjectiveDao objectiveDao;
-    private ObjectiveDatabase db;
 
     @Before
     public void setup() {
         objective = TestUtil.createObjective();
         objective.setId(1); // id is set to 1 because 0 counts as a null value (to Room).
 
-        Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, ObjectiveDatabase.class).allowMainThreadQueries().build();
-        objectiveDao = db.getObjectiveDao();
+        Application application = (Application) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
+        viewModel = new ObjectiveViewModel(application);
     }
 
     @After
     public void cleanup() {
-        db.close();
         listObserver = null;
         objectiveObserver = null;
     }
 
     @Test
     public void objectiveIsInsertedIntoDatabase() {
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
         listObserver = objectives -> assertThat(objectives.get(0), equalTo(objective));
-        objectiveDao.getAll().observeForever(listObserver);
+        viewModel.getAll().observeForever(listObserver);
     }
 
     @Test
     public void objectiveIsActivated() {
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
         listObserver = objectives -> assertThat(objectives.get(0), equalTo(objective));
-        objectiveDao.getActive().observeForever(listObserver);
+        viewModel.getActive().observeForever(listObserver);
     }
 
     @Test public void objectiveIsNotActivated() {
         objective.setEndDate(LocalDate.now().minusDays(1));
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
 
         listObserver = objectives -> assertTrue(objectives.isEmpty());
-        objectiveDao.getActive().observeForever(listObserver);
+        viewModel.getActive().observeForever(listObserver);
     }
 
     @Test
     public void objectiveIsUpdated() {
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
         listObserver = objectives -> assertEquals(objectives.get(0).getTitle(), objective.getTitle());
-        objectiveDao.getAll().observeForever(listObserver);
+        viewModel.getAll().observeForever(listObserver);
 
         objective.setTitle("New Title");
         listObserver = objectives -> assertEquals(objectives.get(0).getTitle(), objective.getTitle());
-        objectiveDao.updateAll(objective);
+        viewModel.updateAll(objective);
     }
 
     @Test
     public void objectiveIsDeleted() {
-        objectiveDao.insertAll(objective);
-        objectiveDao.deleteAll(objective);
+        viewModel.insertAll(objective);
+        viewModel.deleteAll(objective);
         listObserver = objectives -> assertTrue(objectives.isEmpty());
-        objectiveDao.getAll().observeForever(listObserver);
+        viewModel.getAll().observeForever(listObserver);
     }
 
     @Test
     public void objectiveCanBeSearchedById() {
         objective.setId(10);
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
 
         objectiveObserver = returned_objective -> assertThat(returned_objective, equalTo(objective));
-        objectiveDao.findById(10).observeForever(objectiveObserver);
+        viewModel.findById(10).observeForever(objectiveObserver);
     }
 
     @Test
     public void objectiveCanBeSearchedByType() {
         objective.setType(ObjectiveType.OBJECTIVE_READ);
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
 
         objective.setType(ObjectiveType.OBJECTIVE_LISTEN);
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
 
         listObserver = objectives -> assertThat(objectives.get(0), equalTo(objective));
-        objectiveDao.findByType(ObjectiveType.OBJECTIVE_LISTEN).observeForever(listObserver);
+        viewModel.findByType(ObjectiveType.OBJECTIVE_LISTEN).observeForever(listObserver);
     }
 
     @Test
     public void objectiveIsReplaced() {
         objective.setId(10);
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
 
         objective.setTitle("New Title");
-        objectiveDao.insertAll(objective);
+        viewModel.insertAll(objective);
 
         objectiveObserver = objective -> assertEquals(objective.getTitle(), "New Title");
-        objectiveDao.findById(10).observeForever(objectiveObserver);
+        viewModel.findById(10).observeForever(objectiveObserver);
     }
 }

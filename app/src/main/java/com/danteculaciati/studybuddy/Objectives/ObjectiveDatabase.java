@@ -20,7 +20,7 @@ public abstract class ObjectiveDatabase extends RoomDatabase {
             synchronized (ObjectiveDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context,
-                            ObjectiveDatabase.class, "objective_database")
+                            ObjectiveDatabase.class, "objectives.db")
                             .build();
                 }
             }
