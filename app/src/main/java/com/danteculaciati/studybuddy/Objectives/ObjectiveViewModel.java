@@ -7,8 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-// This class acts as a wrapper for ObjectiveDao and executes
-// database transactions on worker threads.
+// This class acts as a wrapper for ObjectiveDao
 public class ObjectiveViewModel extends AndroidViewModel {
 
     // One variable is created for each one of the DAO methods,

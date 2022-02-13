@@ -11,6 +11,8 @@ import androidx.room.TypeConverters;
 @TypeConverters({Converters.class})
 public abstract class ObjectiveDatabase extends RoomDatabase {
     public abstract ObjectiveDao getObjectiveDao();
+
+    public static final String DATABASE_NAME = "objective_database";
     private static ObjectiveDatabase INSTANCE;
 
     // This method makes sure that only one instance of the database
@@ -20,7 +22,7 @@ public abstract class ObjectiveDatabase extends RoomDatabase {
             synchronized (ObjectiveDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context,
-                            ObjectiveDatabase.class, "objectives.db")
+                            ObjectiveDatabase.class, DATABASE_NAME)
                             .build();
                 }
             }
