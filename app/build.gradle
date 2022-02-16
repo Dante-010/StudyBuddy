@@ -22,6 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -31,7 +36,7 @@ android {
 dependencies {
     def androidXTestVersion = "1.4.0"
     def jUnitVersion = "4.+"
-    def lifecycle_version = "2.4.0"
+    def lifecycle_version = "2.4.1"
     def room_version = "2.4.1"
 
     annotationProcessor "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
@@ -51,5 +56,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.test:runner:$androidXTestVersion"
     androidTestImplementation "androidx.test:rules:$androidXTestVersion"
-
 }

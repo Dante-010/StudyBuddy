@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StudyBuddy</string>
+    <string name="day">día</string>
+    <string name="pages">páginas</string>
+    <string name="objective_counter">Contador de objetivo</string>
+    <string name="objective_title">Título de objetivo</string>
+    <string name="objective_done_button">Objetivo terminado</string>
+
+    <plurals name="hours">
+        <item quantity="one">hora</item>
+        <item quantity="other">horas</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">minuto</item>
+        <item quantity="other">minutos</item>
+    </plurals>
+</resources>
