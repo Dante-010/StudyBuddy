@@ -6,6 +6,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 // This class acts as a wrapper for ObjectiveDao
 public class ObjectiveViewModel extends AndroidViewModel {
@@ -15,51 +17,59 @@ public class ObjectiveViewModel extends AndroidViewModel {
     private LiveData<List<Objective>> allObjectives, activeObjectives, typeObjectives;
     private LiveData<Objective> idObjective;
 
+    private final ObjectiveDatabase db;
     private final ObjectiveDao objectiveDao;
+    private final ExecutorService worker;
 
     public ObjectiveViewModel(Application application) {
         super(application);
-        ObjectiveDatabase db = ObjectiveDatabase.getDatabase(application.getApplicationContext());
+        db = ObjectiveDatabase.getDatabase(application.getApplicationContext());
         objectiveDao = db.getObjectiveDao();
+        worker = Executors.newSingleThreadExecutor();
     }
 
     public LiveData<List<Objective>> getAll() {
         if (allObjectives == null) {
-            allObjectives = objectiveDao.getAll();
+            worker.execute(() -> allObjectives = objectiveDao.getAll());
         }
         return allObjectives;
     }
 
     public LiveData<List<Objective>> getActive() {
         if (activeObjectives == null) {
-            activeObjectives = objectiveDao.getActive();
+            worker.execute(() -> activeObjectives = objectiveDao.getActive());
         }
         return activeObjectives;
     }
 
     public LiveData<List<Objective>> findByType(ObjectiveType type) {
         if (typeObjectives == null) {
-            typeObjectives = objectiveDao.findByType(type);
+            worker.execute(() -> typeObjectives = objectiveDao.findByType(type));
         }
         return typeObjectives;
     }
 
     public LiveData<Objective> findById(int id) {
         if (idObjective == null) {
-            idObjective = objectiveDao.findById(id);
+            worker.execute(() -> idObjective = objectiveDao.findById(id));
         }
         return idObjective;
     }
 
     public void insertAll(Objective... objectives) {
-        objectiveDao.insertAll(objectives);
+        worker.execute(() -> objectiveDao.insertAll(objectives));
     }
 
     public void deleteAll(Objective... objectives) {
-        objectiveDao.deleteAll(objectives);
+        worker.execute(() -> objectiveDao.deleteAll(objectives));
     }
 
     public void updateAll(Objective... objectives) {
-        objectiveDao.updateAll(objectives);
+        worker.execute(() -> objectiveDao.updateAll(objectives));
+    }
+
+    // Use with extreme caution
+    public void nukeDatabase() {
+        worker.execute(db::clearAllTables);
     }
 }

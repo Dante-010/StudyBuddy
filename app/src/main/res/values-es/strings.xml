@@ -6,6 +6,8 @@
     <string name="objective_counter">Contador de objetivo</string>
     <string name="objective_title">Título de objetivo</string>
     <string name="objective_done_button">Objetivo terminado</string>
+    <string name="settings">Configuración</string>
+    <string name="new_objective">Nuevo objetivo</string>
 
     <plurals name="hours">
         <item quantity="one">hora</item>

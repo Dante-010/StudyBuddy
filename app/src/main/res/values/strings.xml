@@ -5,6 +5,8 @@
     <string name="objective_counter">Objective Counter</string>
     <string name="objective_title">Objective title</string>
     <string name="objective_done_button">Objective done</string>
+    <string name="settings">Settings</string>
+    <string name="new_objective">New objective</string>
 
     <plurals name="hours">
         <item quantity="one">hours</item>
