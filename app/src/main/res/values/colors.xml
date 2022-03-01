@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <color name="light_green">#7FFF00</color>
-    <color name="green">#377413</color>
-    <color name="dark_green">#1D3D0A</color>
-    <color name="black">#FF000000</color>
-    <color name="gray">#767676</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="primaryColor">#424242</color>
+    <color name="primaryLightColor">#6d6d6d</color>
+    <color name="primaryDarkColor">#1b1b1b</color>
+    <color name="secondaryColor">#00c853</color>
+    <color name="secondaryLightColor">#5efc82</color>
+    <color name="secondaryDarkColor">#009624</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
 </resources>

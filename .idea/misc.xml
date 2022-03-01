@@ -8,10 +8,14 @@
         <entry key="app/src/main/res/drawable/done_icon.xml" value="0.2526041666666667" />
         <entry key="app/src/main/res/drawable/ic_done_icon.xml" value="0.285" />
         <entry key="app/src/main/res/drawable/ic_study_buddy.xml" value="0.3085" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_objective_creation.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/list_element_objective.xml" value="0.5" />
         <entry key="app/src/main/res/layout/objective_list_element.xml" value="0.5" />
         <entry key="app/src/main/res/layout/recycler_view_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/root_preferences.xml" value="0.14351851851851852" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.297" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.5" />
       </map>
     </option>
   </component>

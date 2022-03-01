@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.danteculaciati.studybuddy.Objectives.Objective;
-import com.danteculaciati.studybuddy.databinding.ObjectiveListElementBinding;
+import com.danteculaciati.studybuddy.databinding.ListElementObjectiveBinding;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.View
         private final ImageButton objectiveDoneButton;
         private final ProgressBar progressBar;
 
-        public ViewHolder(ObjectiveListElementBinding binding) {
+        public ViewHolder(ListElementObjectiveBinding binding) {
             super(binding.getRoot());
             counterTextView = binding.counterTextView;
             titleTextView = binding.titleTextView;
@@ -59,6 +59,7 @@ public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.View
         public void onClick(View view) {
             // TODO: Add logic when objective is completed
             Log.d("OBJECTIVE_ADAPTER", "Done button pressed.");
+            objectiveDoneButton.setImageResource(R.drawable.ic_study_buddy);
         }
     }
 
@@ -67,7 +68,7 @@ public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ObjectiveListElementBinding binding = ObjectiveListElementBinding
+        ListElementObjectiveBinding binding = ListElementObjectiveBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
         return new ViewHolder(binding);
