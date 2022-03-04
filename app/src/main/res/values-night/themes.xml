@@ -11,6 +11,6 @@
         <item name="colorSecondaryVariant">@color/secondaryColor</item>
         <item name="colorOnSecondary">@color/primaryColor</item>
         <!-- Customize your theme here. -->
-        <item name="textFillColor">@color/secondaryTextColor</item>
+        <item name="textFillColor">@color/primaryTextColor</item>
     </style>
 </resources>
