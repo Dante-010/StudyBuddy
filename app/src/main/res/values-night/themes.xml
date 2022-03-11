@@ -2,15 +2,16 @@
     <!-- Base application theme. -->
     <style name="Theme.StudyBuddy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryDarkColor</item>
-        <item name="colorPrimaryDark">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorPrimary">@color/nightPrimaryDarkColor</item>
+        <item name="colorPrimaryDark">@color/nightPrimaryColor</item>
+        <item name="colorPrimaryVariant">@color/nightPrimaryVariantColor</item>
         <item name="colorOnPrimary">@color/secondaryColor</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryLightColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryColor</item>
-        <item name="colorOnSecondary">@color/primaryColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryNightVariantColor</item>
+        <item name="colorOnSecondary">@color/textColor</item>
         <!-- Customize your theme here. -->
-        <item name="textFillColor">@color/primaryTextColor</item>
+        <item name="textFillColor">@color/nightTextColor</item>
+        <item name="colorAccent">@color/secondaryNightVariantColor</item>
     </style>
 </resources>

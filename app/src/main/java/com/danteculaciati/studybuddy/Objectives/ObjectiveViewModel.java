@@ -12,11 +12,6 @@ import java.util.concurrent.Executors;
 // This class acts as a wrapper for ObjectiveDao
 public class ObjectiveViewModel extends AndroidViewModel {
 
-    // One variable is created for each one of the DAO methods,
-    // in order to cache the last query inside the ViewModel.
-    private LiveData<List<Objective>> allObjectives, activeObjectives, typeObjectives;
-    private LiveData<Objective> idObjective;
-
     private final ObjectiveDatabase db;
     private final ObjectiveDao objectiveDao;
     private final ExecutorService worker;
@@ -29,31 +24,19 @@ public class ObjectiveViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Objective>> getAll() {
-        if (allObjectives == null) {
-            worker.execute(() -> allObjectives = objectiveDao.getAll());
-        }
-        return allObjectives;
+        return objectiveDao.getAll();
     }
 
     public LiveData<List<Objective>> getActive() {
-        if (activeObjectives == null) {
-            worker.execute(() -> activeObjectives = objectiveDao.getActive());
-        }
-        return activeObjectives;
+        return objectiveDao.getActive();
     }
 
     public LiveData<List<Objective>> findByType(ObjectiveType type) {
-        if (typeObjectives == null) {
-            worker.execute(() -> typeObjectives = objectiveDao.findByType(type));
-        }
-        return typeObjectives;
+        return objectiveDao.findByType(type);
     }
 
     public LiveData<Objective> findById(int id) {
-        if (idObjective == null) {
-            worker.execute(() -> idObjective = objectiveDao.findById(id));
-        }
-        return idObjective;
+        return objectiveDao.findById(id);
     }
 
     public void insertAll(Objective... objectives) {

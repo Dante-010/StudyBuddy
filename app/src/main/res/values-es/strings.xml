@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Strings -->
+    <string name="amount">Cantidad</string>
     <string name="app_name">StudyBuddy</string>
     <string name="day">día</string>
-    <string name="pages">páginas</string>
-    <string name="objective_counter">Contador de objetivo</string>
-    <string name="objective_title">Título de objetivo</string>
-    <string name="objective_done_button">Objetivo terminado</string>
-    <string name="settings">Configuración</string>
+    <string name="done">Listo</string>
+    <string name="main_activity_title">Objetivos activos</string>
     <string name="new_objective">Nuevo objetivo</string>
+    <string name="new_objective_activity_title">Crear nuevo objetivo</string>
+    <string name="objective_counter">Contador de objetivo</string>
+    <string name="objective_done_button">Objetivo terminado</string>
+    <string name="objective_title">Título de objetivo</string>
+    <string name="objective_type">Tipo de objetivo</string>
+    <string name="pages">páginas</string>
+    <string name="settings">Configuración</string>
+    <string name="settings_activity_title">Configuración</string>
+    <string name="startEndDate">Fecha de comienzo - Fecha de finalización</string>
 
+    <!-- Plurals -->
     <plurals name="hours">
         <item quantity="one">hora</item>
         <item quantity="other">horas</item>

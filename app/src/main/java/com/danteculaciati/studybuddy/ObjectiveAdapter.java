@@ -21,6 +21,8 @@ import java.util.List;
 public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.ViewHolder> {
     private List<Objective> objectiveList;
 
+    public ObjectiveAdapter() { }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView counterTextView, titleTextView, startDateTextView, endDateTextView;
         private final ImageButton objectiveDoneButton;
@@ -41,7 +43,7 @@ public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.View
             LocalDate startDate = objective.getStartDate();
             LocalDate endDate = objective.getEndDate();
 
-            counterTextView.setText(String.valueOf(objective.getQuantity()));
+            counterTextView.setText(String.valueOf(objective.getAmount()));
             titleTextView.setText(objective.getTitle());
             startDateTextView.setText(startDate.toString());
             endDateTextView.setText(endDate.toString());
@@ -62,8 +64,6 @@ public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.View
             objectiveDoneButton.setImageResource(R.drawable.ic_study_buddy);
         }
     }
-
-    public ObjectiveAdapter() { }
 
     @NonNull
     @Override

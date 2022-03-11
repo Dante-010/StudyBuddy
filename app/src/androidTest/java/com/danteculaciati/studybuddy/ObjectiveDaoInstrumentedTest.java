@@ -32,7 +32,7 @@ class TestUtil {
         Objective objective = new Objective();
         objective.setTitle("Test Objective");
         objective.setType(ObjectiveType.OBJECTIVE_DO);
-        objective.setQuantity(10);
+        objective.setAmount(10);
         objective.setStartDate(LocalDate.now());
         objective.setEndDate(LocalDate.now().plusDays(1));
 

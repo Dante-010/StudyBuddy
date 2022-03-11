@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    //noinspection GradleDependency
     implementation 'androidx.preference:preference:1.1.1'
     def androidXTestVersion = "1.4.0"
     def jUnitVersion = "4.+"
