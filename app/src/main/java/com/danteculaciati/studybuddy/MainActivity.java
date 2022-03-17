@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ObjectiveViewModel objectivesViewModel = new ViewModelProvider(this).get(ObjectiveViewModel.class);
-        ObjectiveAdapter adapter = new ObjectiveAdapter();
+        ObjectiveAdapter adapter = new ObjectiveAdapter(this.getResources(), objectivesViewModel);
 
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -45,10 +45,6 @@ public class MainActivity extends AppCompatActivity {
         if (activeObjectives != null) {
             activeObjectives.observe(this, adapter::setObjectiveList);
         }
-
-        // TODO:
-        //  - Adjust RecyclerView bottom padding
-        //  - Redesign objective look
 
         binding.newObjectiveButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, ObjectiveCreationActivity.class);

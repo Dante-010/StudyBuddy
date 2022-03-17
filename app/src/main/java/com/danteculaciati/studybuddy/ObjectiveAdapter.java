@@ -1,18 +1,20 @@
 package com.danteculaciati.studybuddy;
 
-import android.util.Log;
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.danteculaciati.studybuddy.Objectives.Objective;
+import com.danteculaciati.studybuddy.Objectives.ObjectiveViewModel;
 import com.danteculaciati.studybuddy.databinding.ListElementObjectiveBinding;
 
 import java.time.LocalDate;
@@ -20,48 +22,88 @@ import java.util.List;
 
 public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.ViewHolder> {
     private List<Objective> objectiveList;
+    private Resources res;
+    private ObjectiveViewModel viewModel;
 
-    public ObjectiveAdapter() { }
+    public ObjectiveAdapter(Resources res, ObjectiveViewModel viewModel) {
+        this.res = res;
+        this.viewModel = viewModel;
+    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView counterTextView, titleTextView, startDateTextView, endDateTextView;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView counterTextView, titleTextView, referenceTextView;
         private final ImageButton objectiveDoneButton;
         private final ProgressBar progressBar;
 
-        public ViewHolder(ListElementObjectiveBinding binding) {
+        private final Resources res;
+        private final ObjectiveViewModel viewModel;
+
+        public ViewHolder(ListElementObjectiveBinding binding, Resources res, ObjectiveViewModel viewModel) {
             super(binding.getRoot());
             counterTextView = binding.counterTextView;
             titleTextView = binding.titleTextView;
-            startDateTextView = binding.startDateTextView;
-            endDateTextView = binding.endDateTextView;
-
+            referenceTextView = binding.referenceTextView;
             objectiveDoneButton = binding.objectiveDoneButton;
             progressBar = binding.objectiveProgressBar;
+
+            this.res = res;
+            this.viewModel = viewModel;
         }
 
+        @SuppressLint("SetTextI18n")
         void setObjective(Objective objective) {
             LocalDate startDate = objective.getStartDate();
             LocalDate endDate = objective.getEndDate();
+            String reference_text;
 
-            counterTextView.setText(String.valueOf(objective.getAmount()));
             titleTextView.setText(objective.getTitle());
-            startDateTextView.setText(startDate.toString());
-            endDateTextView.setText(endDate.toString());
 
-            int totalDays = (int) (endDate.toEpochDay() - startDate.toEpochDay());
-            int remainingDays = (int) (endDate.toEpochDay() - LocalDate.now().toEpochDay());
+            // Set progress bar according to how many days have passed since startDate.
+            int totalDays = (int) ((endDate.toEpochDay() - startDate.toEpochDay()) + 1);
+            int daysPassed = (int) (LocalDate.now().toEpochDay() - startDate.toEpochDay());
 
+            progressBar.setMin(0);
             progressBar.setMax(totalDays);
-            progressBar.setProgress(remainingDays, true);
+            progressBar.setProgress(daysPassed, true);
 
-            objectiveDoneButton.setOnClickListener(this);
-        }
+            // Set daily amount according to total days.
+            // (this weird formula is used so that the number always rounds up).
+            int dailyAmount = ((objective.getAmount() - 1) /
+                    (totalDays - objective.getMissedDays())) + 1;
+            // Missed days are taken into account so that for every day you miss, the daily amount
+            // increments a bit.
+            counterTextView.setText(String.valueOf(dailyAmount));
 
-        @Override
-        public void onClick(View view) {
-            // TODO: Add logic when objective is completed
-            Log.d("OBJECTIVE_ADAPTER", "Done button pressed.");
-            objectiveDoneButton.setImageResource(R.drawable.ic_study_buddy);
+            // Set reference text depending on objective type.
+            switch (objective.getType()) {
+                case OBJECTIVE_LISTEN:
+                case OBJECTIVE_WATCH:
+                    reference_text = res.getQuantityString(R.plurals.hours, dailyAmount);
+                    break;
+
+                case OBJECTIVE_READ:
+                    reference_text = res.getQuantityString(R.plurals.pages, dailyAmount);
+                    break;
+
+                default:
+                    reference_text = res.getQuantityString(R.plurals.times, dailyAmount);
+            }
+
+            referenceTextView.setText(res.getString(R.string.reference_string, reference_text));
+
+            // If daily objective was completed, set StudyBuddy image
+            if (objective.isDailyCompleted()) {
+                objectiveDoneButton.setImageResource(R.drawable.ic_study_buddy);
+            }
+
+            // Set button listener.
+            objectiveDoneButton.setOnClickListener( v -> {
+                if (!objective.isDailyCompleted()) {
+                    objectiveDoneButton.setImageResource(R.drawable.ic_study_buddy);
+                    objective.setDailyCompleted(true);
+                    viewModel.updateAll(objective);
+                }
+            });
         }
     }
 
@@ -71,7 +113,7 @@ public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.View
         ListElementObjectiveBinding binding = ListElementObjectiveBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false);
 
-        return new ViewHolder(binding);
+        return new ViewHolder(binding, res, viewModel);
     }
 
     @Override

@@ -41,4 +41,7 @@ public enum ObjectiveType {
         throw new IllegalArgumentException();
     }
 
+    public static int getNumberOfTypes() {
+        return values().length;
+    }
 }

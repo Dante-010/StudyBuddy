@@ -31,6 +31,10 @@ public interface ObjectiveDao {
             "WHERE type = :type")
     LiveData<List<Objective>> findByType(ObjectiveType type);
 
+    @Query("SELECT * FROM objective_database " +
+            "WHERE daily_completed = 1") // 1 = true
+    LiveData<List<Objective>> getDailyCompleted();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Objective... objectives);
 

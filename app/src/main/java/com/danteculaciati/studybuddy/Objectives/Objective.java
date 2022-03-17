@@ -2,6 +2,7 @@ package com.danteculaciati.studybuddy.Objectives;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
@@ -14,13 +15,19 @@ public class Objective {
     private int amount;
     private String title;
     private ObjectiveType type;
-    @ColumnInfo(name = "start_date") private LocalDate startDate;
-    @ColumnInfo(name = "end_date") private LocalDate endDate;
+    @ColumnInfo(name="start_date") private LocalDate startDate;
+    @ColumnInfo(name="end_date") private LocalDate endDate;
+
+    // Stores whether the objective was completed during that day.
+    @ColumnInfo(name="daily_completed") private boolean dailyCompleted = false;
+    // Stores number of days without completing daily amount.
+    @ColumnInfo(name="missed_days") private int missedDays = 0;
 
     public Objective() {
         this("", ObjectiveType.OBJECTIVE_DO, 0, LocalDate.now(), LocalDate.now().plusDays(1));
     }
 
+    @Ignore
     public Objective(String title, ObjectiveType type, int amount, LocalDate startDate, LocalDate endDate) {
         this.title = title;
         this.type = type;
@@ -39,6 +46,9 @@ public class Objective {
     public LocalDate getStartDate() { return startDate; }
     public LocalDate getEndDate() { return endDate; }
 
+    public boolean isDailyCompleted() { return dailyCompleted; }
+    public int getMissedDays() { return missedDays; }
+
     // Setters
 
     public void setId(int id) { this.id = id; }
@@ -47,6 +57,11 @@ public class Objective {
     public void setAmount(int amount) { this.amount = amount; }
     public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+
+    public void setDailyCompleted(boolean completed) { dailyCompleted = completed; }
+    public void setMissedDays(int missedDays) { this.missedDays = missedDays; }
+
+    public void addMissedDay() { missedDays += 1; }
 
     @Override
     public boolean equals(Object o) {

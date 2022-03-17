@@ -1,6 +1,7 @@
 package com.danteculaciati.studybuddy;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,13 @@ import com.danteculaciati.studybuddy.databinding.ActivityObjectiveCreationBindin
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+
+/*
+    TODO:
+     Add possibility to create "periodic objectives" (eg: Read 50 pages everyday)
+     Create new database table?
+ */
 
 public class ObjectiveCreationActivity extends AppCompatActivity {
     ObjectiveViewModel objectivesViewModel;
@@ -33,16 +41,36 @@ public class ObjectiveCreationActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        // Set toolbar back button listener
+        // Set toolbar back button listener.
         binding.toolbarNewObjective.setNavigationOnClickListener( v -> finish() );
 
-        // Set enum values as spinner items
-        String[] objectiveTypes = ObjectiveType.names();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, objectiveTypes);
+        // Set enum values as spinner items.
+
+        // This HashMap is used to later retrieve the appropriate ObjectiveType value
+        // using ObjectiveType.getEnum(typeStr), whilst also being able to dynamically
+        // retrieve locale string values. There may be better solutions, but this
+        // the only one I thought of that would allow me to add new fields to the Enum in an easy way.
+        HashMap<String, String> localeMap = new HashMap<>();
+        String[] objectiveTypes = new String[ObjectiveType.getNumberOfTypes()];
+        Resources res = getResources();
+        int i = 0;
+
+        for (String type : ObjectiveType.names()) { // Localize strings.
+            int id = res.getIdentifier(type, "string", getPackageName());
+            String localizedString = res.getString(id);
+            objectiveTypes[i++] = localizedString;
+
+            localeMap.put(localizedString, type);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                objectiveTypes);
+
         binding.spinnerObjectiveType.setAdapter(adapter);
         binding.spinnerObjectiveType.setSelection(adapter.getPosition(ObjectiveType.OBJECTIVE_DO.toString())); // Set default value to "Do"
 
-        // Create date range picker
+        // Create date range picker.
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -63,7 +91,7 @@ public class ObjectiveCreationActivity extends AppCompatActivity {
             binding.editTextStartEndDates.setText(startDate[0] + " -> " + endDate[0]);
         });
 
-        // Set done button listener and create objective if possible
+        // Set done button listener and create objective if possible.
         binding.buttonCreateObjective.setOnClickListener( v -> {
             LocalDate start, end;
             String titleStr, typeStr, amountStr;
@@ -84,7 +112,7 @@ public class ObjectiveCreationActivity extends AppCompatActivity {
 
             objectivesViewModel.insertAll(new Objective(
                     titleStr,
-                    ObjectiveType.getEnum(typeStr),
+                    ObjectiveType.getEnum(localeMap.get(typeStr)),
                     Integer.parseInt(amountStr),
                     start,
                     end

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// This class acts as a wrapper for ObjectiveDao
+// This class acts as a wrapper for ObjectiveDao.
 public class ObjectiveViewModel extends AndroidViewModel {
 
     private final ObjectiveDatabase db;
@@ -51,7 +51,7 @@ public class ObjectiveViewModel extends AndroidViewModel {
         worker.execute(() -> objectiveDao.updateAll(objectives));
     }
 
-    // Use with extreme caution
+    // Use with extreme caution!
     public void nukeDatabase() {
         worker.execute(db::clearAllTables);
     }
