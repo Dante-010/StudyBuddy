@@ -1,4 +1,4 @@
-package com.danteculaciati.studybuddy;
+package com.danteculaciati.studybuddy.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
@@ -63,7 +63,7 @@ public class ObjectiveCreationActivity extends AppCompatActivity {
             localeMap.put(localizedString, type);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item,
                 objectiveTypes);
 

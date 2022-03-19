@@ -31,6 +31,8 @@ public class ObjectiveViewModel extends AndroidViewModel {
         return objectiveDao.getActive();
     }
 
+    public LiveData<List<Objective>> getDailyCompleted() { return objectiveDao.getDailyCompleted(); }
+
     public LiveData<List<Objective>> findByType(ObjectiveType type) {
         return objectiveDao.findByType(type);
     }

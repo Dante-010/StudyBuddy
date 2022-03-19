@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="daily_reminder_time_key" translatable="false">daily_reminder_time</string>
+</resources>

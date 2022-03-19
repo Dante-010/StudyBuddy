@@ -11,7 +11,7 @@
         <item name="colorSecondaryVariant">@color/secondaryNightVariantColor</item>
         <item name="colorOnSecondary">@color/textColor</item>
         <!-- Customize your theme here. -->
-        <item name="textFillColor">@color/nightTextColor</item>
+        <item name="android:textColor">@color/nightTextColor</item>
         <item name="colorAccent">@color/secondaryNightVariantColor</item>
     </style>
 </resources>

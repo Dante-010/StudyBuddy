@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Strings -->
+    <string name="Do">Hacer</string>
+    <string name="Listen">Escuchar</string>
+    <string name="Read">Leer</string>
+    <string name="Watch">Mirar</string>
+    <string name="afternoon">Tarde</string>
     <string name="amount">Cantidad</string>
     <string name="app_name">StudyBuddy</string>
+    <string name="daily_reminder_time">Horario de Recordatorio Diario</string>
     <string name="done">Listo</string>
+    <string name="evening">Noche</string>
     <string name="main_activity_title">Objetivos activos</string>
+    <string name="morning">Mañana</string>
     <string name="new_objective">Nuevo objetivo</string>
     <string name="new_objective_activity_title">Crear nuevo objetivo</string>
+    <string name="notifications">Notificaciones</string>
     <string name="objective_counter">Contador de objetivo</string>
     <string name="objective_done_button">Objetivo terminado</string>
     <string name="objective_title">Título de objetivo</string>
     <string name="objective_type">Tipo de objetivo</string>
+    <string name="reference_string">%1$s/día</string>
     <string name="settings">Configuración</string>
     <string name="settings_activity_title">Configuración</string>
     <string name="startEndDate">Fecha de comienzo - Fecha de finalización</string>
-    <string name="reference_string">%1$s/día</string>
-    <string name="Do">Hacer</string>
-    <string name="Watch">Mirar</string>
-    <string name="Listen">Escuchar</string>
-    <string name="Read">Leer</string>
 
     <!-- Plurals -->
     <plurals name="hours">
@@ -40,4 +45,8 @@
         <item quantity="one">página</item>
         <item quantity="other">páginas</item>
     </plurals>
+    <string name="daily_reminder_message">No te olvides de completar tus objetivos diarios!</string>
+    <string name="daily_reminder_description">Tienes %1$d objetivos restantes para hoy</string>
+    <string name="daily_reminder_description_alt">¡Todavía puedes tener objetivos sin completar!</string>
+
 </resources>

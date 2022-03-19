@@ -1,4 +1,4 @@
-package com.danteculaciati.studybuddy;
+package com.danteculaciati.studybuddy.Activities.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
@@ -7,14 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.danteculaciati.studybuddy.Activities.MainActivity;
+import com.danteculaciati.studybuddy.BroadcastReceivers.AlarmReceiver;
 import com.danteculaciati.studybuddy.Objectives.Objective;
 import com.danteculaciati.studybuddy.Objectives.ObjectiveViewModel;
+import com.danteculaciati.studybuddy.R;
 import com.danteculaciati.studybuddy.databinding.ListElementObjectiveBinding;
 
 import java.time.LocalDate;
@@ -22,8 +24,8 @@ import java.util.List;
 
 public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.ViewHolder> {
     private List<Objective> objectiveList;
-    private Resources res;
-    private ObjectiveViewModel viewModel;
+    private final Resources res;
+    private final ObjectiveViewModel viewModel;
 
     public ObjectiveAdapter(Resources res, ObjectiveViewModel viewModel) {
         this.res = res;
@@ -102,6 +104,7 @@ public class ObjectiveAdapter extends RecyclerView.Adapter<ObjectiveAdapter.View
                     objectiveDoneButton.setImageResource(R.drawable.ic_study_buddy);
                     objective.setDailyCompleted(true);
                     viewModel.updateAll(objective);
+                    AlarmReceiver.setAlarms(v.getContext());
                 }
             });
         }

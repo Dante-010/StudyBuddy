@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.danteculaciati.studybuddy">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -10,14 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StudyBuddy">
+        <receiver
+            android:name=".BroadcastReceivers.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <activity
-            android:name=".ObjectiveCreationActivity"
-            android:exported="false" />
+            android:name=".Activities.ObjectiveCreationActivity"
+            android:exported="false"
+            android:parentActivityName=".Activities.MainActivity" />
         <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
+            android:name=".Activities.SettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".Activities.MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,5 +38,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

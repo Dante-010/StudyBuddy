@@ -11,7 +11,7 @@
         <item name="colorSecondaryVariant">@color/secondaryVariantColor</item>
         <item name="colorOnSecondary">@color/textColor</item>
         <!-- Customize your theme here. -->
-        <item name="textFillColor">@color/textColor</item>
+        <item name="android:textColor">@color/textColor</item>
         <item name="colorAccent">@color/secondaryVariantColor</item>
     </style>
 </resources>
