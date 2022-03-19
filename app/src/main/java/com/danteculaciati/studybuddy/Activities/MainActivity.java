@@ -31,7 +31,6 @@ import com.danteculaciati.studybuddy.databinding.ActivityMainBinding;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: Add AlarmManager and set daily notifications and reset objectives at midnight.
 public class MainActivity extends AppCompatActivity {
 
     public static final String DAILY_REMINDER_TAG = "DAILY_REMINDER";

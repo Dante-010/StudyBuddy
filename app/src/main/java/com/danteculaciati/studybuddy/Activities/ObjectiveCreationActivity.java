@@ -21,12 +21,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-/*
-    TODO:
-     Add possibility to create "periodic objectives" (eg: Read 50 pages everyday)
-     Create new database table?
- */
-
 public class ObjectiveCreationActivity extends AppCompatActivity {
     ObjectiveViewModel objectivesViewModel;
 
