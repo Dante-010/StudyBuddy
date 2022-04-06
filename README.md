@@ -13,7 +13,7 @@ The UI Layer consists of three activities:
 
 - [`MainActivity.java`](app/src/main/java/com/danteculaciati/studybuddy/Activities/MainActivity.java)
 - [`ObjectiveCreationActivity.java`](app/src/main/java/com/danteculaciati/studybuddy/Activities/ObjectiveCreationActivity.java)
-- [`Settings.java`](app/src/main/java/com/danteculaciati/studybuddy/Activities/Settings.java)
+- [`SettingsActivity.java`](app/src/main/java/com/danteculaciati/studybuddy/Activities/SettingsActivity.java)
 
 Apart from `MainActivity.java` (which displays active objectives), the other ones
 are pretty self explanatory.
@@ -40,7 +40,7 @@ Instrumentation tests can be found inside the [`androidTest`](app/src/androidTes
 I didn't write any unit tests because, honestly, I didn't feel like it.
 
 The app is translated in both English and Spanish, and resource files can be found inside
-the [`res`](app/src/main/java/com/danteculaciati/studybuddy/res) folder.
+the [`res`](app/src/main/res) folder.
 
 ----------- 
 
